@@ -39,7 +39,7 @@ pip install -r requirements.txt --break-system-packages
 兼容层启动后会自动创建`[Bncr_base]/plugin/python`作为插件目录，保存在此目录下的插件会被自动加载    
 支持`*.py`|`*.so`插件  
 文件名为`setup.py`或者以双下划线`__`开头的文件不会被加载，这是因为：  
-仓库内的[`plugin/setup.py`](./plugin/setup.py)是使用cython一键编译插件目录以及子目录下所有`*.py`插件的脚本，原`*.py`会被重命名为`__*.py`    
+仓库内的[`python/setup.py`](./python/setup.py)是使用cython一键编译插件目录以及子目录下所有`*.py`插件的脚本，原`*.py`会被重命名为`__*.py`    
 `[Bncr_base]/plugin/python/configs`目录是用于借用无界的web插件设置页面的，不要在此目录下保存插件  
 `[Bncr_base]/plugin/python/*/build`目录是cython编译时生成的，不要在此目录下保存插件  
 
@@ -55,11 +55,11 @@ if TYPE_CHECKING:
         sysMethod,
     )
 ```
-[`plugin/type/python.pyi`](./plugin/type/python.pyi)  
+[`python/type/python.pyi`](./python/type/python.pyi)  
 
 # 开发文档  
 ## 1. 实现  
-90%实现了无界在nodejs下的风格，语法可以参考[无界项目官网](https://anmours.github.io/Bncr/#/)，插件实例可以参考 [`plugin/__example.py`](./plugin/__example.py)与[`plugin/XJJ/__import_example.py`](./plugin/XJJ/__import_example.py)  
+90%实现了无界在nodejs下的风格，语法可以参考[无界项目官网](https://anmours.github.io/Bncr/#/)，插件实例可以参考 [`python/__example.py`](./python/__example.py)与[`python/XJJ/__import_example.py`](./python/XJJ/__import_example.py)  
 ## 2. TODO 未实现  
 1. Sender.Bridge()  [bncr]  
 2. sysMethod.createStartupCompletionHook()  [bncr]  

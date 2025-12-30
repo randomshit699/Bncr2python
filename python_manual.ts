@@ -32,8 +32,8 @@ const sysConfig = {
 const file_dir = "/bncr/src"; //python兼容层文件所在位置
 const python_bin = "/usr/bin/python3.11"; //python3.11所在位置，which python3.11
 
-sysMethod.testModule(["reconnecting-websocket", "ws", "http-proxy-middleware", "axios"], { install: true });
-if (!sysMethod.testModule(["reconnecting-websocket", "ws", "http-proxy-middleware", "axios"])) {
+sysMethod.testModule(["reconnecting-websocket", "ws", "http-proxy-middleware"], { install: true });
+if (!sysMethod.testModule(["reconnecting-websocket", "ws", "http-proxy-middleware"])) {
     throw Error("安装依赖失败");
 }
 import { spawn } from "child_process";

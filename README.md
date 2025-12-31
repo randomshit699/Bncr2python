@@ -2,7 +2,13 @@
 
 无界（Bncr）的python插件兼容层，为无界带来python支持  
 本项目是无界的附属增强，需要先安装无界本体，无界安装教程请看文末 相关链接 章节  
+# 效果
+1. 项目启动  
 <img width="683" height="380" alt="image" src="https://github.com/user-attachments/assets/0a19e302-5c3a-427d-afc0-5b8aa8b21b60" />
+
+2. 调用插件
+<img width="1280" height="309" alt="image" src="https://github.com/user-attachments/assets/11174e12-9b62-4f91-8cd0-8636491624e5" />
+
 
 
 # 安装  

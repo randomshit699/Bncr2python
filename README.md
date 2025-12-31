@@ -1,7 +1,9 @@
 # Bncr2python 
 
-无界（Bncr）的python插件兼容层  
-<img width="737" height="659" alt="image" src="https://github.com/user-attachments/assets/0ac60d1c-af60-454b-8b51-95bbf6cfdd30" />
+无界（Bncr）的python插件兼容层，为无界带来python支持  
+本项目是无界的附属增强，需要先安装无界本体，无界安装教程请看文末 相关链接 章节  
+<img width="683" height="380" alt="image" src="https://github.com/user-attachments/assets/0a19e302-5c3a-427d-afc0-5b8aa8b21b60" />
+
 
 # 安装  
 ## 1. 自动安装 

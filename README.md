@@ -14,7 +14,7 @@
 # 安装  
 ## 1. 自动安装 
 1.1 在无界web插件市场内订阅`https://github.com/randomshit699/Bncr_plugins`这个插件源  
-1.2 安装源中的`python.ts` 插件  
+1.2 安装/更新源中的`python.ts` 插件  
 1.3 重启无界`docker restart bncr`
 
 ## 2. 手动安装  
@@ -26,16 +26,17 @@ apk add python3=3.11.14-r0 py3-pip  #安装python和pip
 exit  #退出容器
 ```
 ### 2.2 下载无界python兼容层  
-下载  
-[`__init__.py`](./__init__.py)  
-[`python.cpython-311-x86_64-linux-musl.so`](./python.cpython-311-x86_64-linux-musl.so)  
-这两个文件，保存到无界容器内同一个文件夹中（例如：`/bncr/src`）  
+下载启动脚本 -> [`__init__.py`](./__init__.py)   
+  
+**以下两个本体二选一**  
+A.amd64架构cpu下载 -> [`python.cpython-311-x86_64-linux-musl.so`](./python.cpython-311-x86_64-linux-musl.so)  
+B.arm64架构cpu下载 -> [`python.cpython-311-aarch64-linux-musl.so`](./python.cpython-311-aarch64-linux-musl.so)  
+将启动脚本和本体保存到无界容器内同一个文件夹中（例如：`/bncr/src`）  
 ### 2.3 安装插件  
-将[`python_manual.ts`](https://raw.githubusercontent.com/randomshit699/Bncr2python/refs/heads/main/python_manual.ts)插件下载至无界插件文件夹内 
+将[`python_manual.ts`](https://raw.githubusercontent.com/randomshit699/Bncr2python/refs/heads/main/python_manual.ts)插件下载至无界插件文件夹内
+根据需要修改插件明文部分的设置  
 ### 2.4 重启无界  
-```sh
-docker restart bncr
-```
+`docker restart bncr`
 
 # 使用说明  
 ## 1. 首次启动  
@@ -44,14 +45,20 @@ docker restart bncr
 pip install -r requirements.txt --break-system-packages
 ```  
 ## 2. 插件加载  
-兼容层启动后会自动创建`[Bncr_base]/plugin/python`作为插件目录，保存在此目录下的插件会被自动加载    
-支持`*.py`|`*.so`插件  
-文件名为`setup.py`或者以双下划线`__`开头的文件不会被加载，这是因为：  
+**支持`*.py`|`*.so`插件**  
+
+兼容层使用`/bncr/BncrData/plugin/python`作为插件目录，只有保存在此目录下的插件会被加载   
+  
+文件名若为`setup.py`或者以双下划线`__`开头则不会被加载    
+`*/configs`和`*/build`目录下的文件不会被加载  
+
+## 3. 插件加密  
 仓库内的[`python/setup.py`](./python/setup.py)是使用cython一键编译插件目录以及子目录下所有`*.py`插件的脚本，原`*.py`会被重命名为`__*.py`    
-`[Bncr_base]/plugin/python/configs`目录是用于借用无界的web插件设置页面的，不要在此目录下保存插件  
-`[Bncr_base]/plugin/python/*/build`目录是cython编译时生成的，不要在此目录下保存插件  
+`python/configs`目录是用于借用无界的web插件设置页面的，所以不要在此目录下保存插件  
+`python/*/build`目录会在cython编译时临时生成，编译完成后会自动删除，所以不要在此目录下保存插件  
 
 ## 3. type check
+编写插件时在IDE内可以使用类型提示，在插件中插入下面的代码即可  
 ```python
 if TYPE_CHECKING:
     from type.python import (
@@ -63,7 +70,7 @@ if TYPE_CHECKING:
         sysMethod,
     )
 ```
-[`python/type/python.pyi`](./python/type/python.pyi)  
+类型提示文件 -> [`python/type/python.pyi`](./python/type/python.pyi)  
 
 # 开发文档  
 ## 1. 实现  

@@ -69,10 +69,8 @@ if TYPE_CHECKING:
 ## 1. 实现  
 90%实现了无界在nodejs下的风格，语法可以参考[无界项目官网](https://anmours.github.io/Bncr/#/)，插件实例可以参考 [`python/__example.py`](./python/__example.py)与[`python/XJJ/__import_example.py`](./python/XJJ/__import_example.py)  
 ## 2. TODO 未实现  
-1. Sender.Bridge()  [bncr]  
-2. sysMethod.createStartupCompletionHook()  [bncr]  
-3. sysMethod.isDevP()  [现在总是返回 false]
-4. ADD `# @encrypt true`可以自动编译  [现在需要手动使用`setup.py`编译]
+1. sysMethod.isDevP()  [现在总是返回 false]
+2. ADD `# @encrypt true`可以自动编译  [现在需要手动使用`setup.py`编译]
 ## 3. NOT TODO 不计划实现  
 1. Adapter()  [bncr]
 

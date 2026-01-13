@@ -14,7 +14,7 @@ from typing import (
 )
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from fastapi import FastAPI
+from fastapi import APIRouter
 
 type Second = int
 
@@ -180,4 +180,4 @@ class Sender:
     async def Bridge(self, bridge: str, *args) -> Any: ...
 
 sysMethod: SysMethod
-router: FastAPI
+router: APIRouter

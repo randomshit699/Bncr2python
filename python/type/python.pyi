@@ -10,8 +10,10 @@ from typing import (
     Required,
     TypedDict,
     Union,
+    TypeVar,
     final,
 )
+from types import CoroutineType
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import APIRouter
@@ -71,7 +73,13 @@ class MethodClass:
     oldValue: Any
     eventType: Literal["del", "set"]
     watchInfo: WatchInfo
-    def __init__(self, watchInfo: "WatchInfo", oldValue: Any, newValue: Any, eventType: Literal["del", "set"]) -> None: ...
+    def __init__(
+        self,
+        watchInfo: "WatchInfo",
+        oldValue: Any,
+        newValue: Any,
+        eventType: Literal["del", "set"],
+    ) -> None: ...
     def stop(self) -> None:
         """停止callback (执行过changeValue())
         或者恢复oldValue (else)"""
@@ -98,7 +106,8 @@ class WatchInfo:
     key: str
 
 class BncrDB:
-    """BncrDB"""
+    """Bncr内置数据库
+    不支持后挂载数据库 即原new Bncr()的第二项参数"""
 
     name: str
 
@@ -143,16 +152,41 @@ class SysMethod:
         packages: List[str] | str,
         mode: Literal["silent", "error", "all", "capture"] = "error",
     ) -> tuple[str, str] | bool: ...
-    def createStartupCompletionHook(self, name: str, callback: Callable, args: tuple) -> None: ...
-    def createBncrConnectCompletionHook(self, name: str, callback: Callable, args: tuple) -> None: ...
-    def testModule(self, packages: List[str], install: bool = False) -> Dict[str, bool]: ...
+    def createStartupCompletionHook(
+        self, name: str, callback: Callable, args: tuple
+    ) -> None: ...
+    def createBncrConnectCompletionHook(
+        self, name: str, callback: Callable, args: tuple
+    ) -> None: ...
+    def testModule(
+        self, packages: List[str], install: bool = False
+    ) -> Dict[str, bool]: ...
     async def sleep(self, second: Second): ...
     def getTime(self, format) -> str | int: ...
     async def inline(self, msg: str, name: str = "system@Admin"): ...
-    async def push(self, platform: str, groupId: int | str, userId: int | str, msg: str, type: str = "text") -> str: ...
+    async def push(
+        self,
+        platform: str,
+        groupId: int | str,
+        userId: int | str,
+        msg: str,
+        type: str = "text",
+    ) -> str: ...
     async def pushAdmin(self, platform: list[str], msg: str): ...
     def isDev(self) -> bool: ...
     async def isDevP(self) -> bool: ...
+    async def nodeRpc(self, filepath: str, method: str, *params: Any) -> Any:
+        """sysMethod.nodeRpc
+        远程调用node函数
+
+        Args:
+            filepath (str): (rel)"../xxx.js" || (abs)"/bncr/BncrData/xxx/yyy.js"
+            method (str): (base)"" || (sub)"config" || (chain)"config.web.port"
+
+        Example:
+            await sysMethod.nodeRpc('../xxx.js', 'config.update', 'port', 1234)
+        """
+        ...
 
 @final
 class Sender:
@@ -165,7 +199,11 @@ class Sender:
     async def reply(self, msg: replyClass, delAfter: Second = 0) -> None: ...
     async def inlineSugar(self, msg: str) -> None: ...
     async def delMsg(self, msgIdArr: str | List[str]) -> None: ...
-    async def waitInput(self, callback: Callable[[Sender], str | Sender], time: Second) -> Sender | None: ...
+    async def waitInput(
+        self,
+        callback: Callable[[Sender], str | Sender | CoroutineType[Any, Any, Any]],
+        time: Second,
+    ) -> Sender | None: ...
     async def again(self, msg: replyClass) -> Sender | None: ...
     def param(self, k: int) -> str: ...
     def getMsg(self) -> str: ...
@@ -178,6 +216,27 @@ class Sender:
     def getMsgId(self) -> str: ...
     async def isAdmin(self) -> bool: ...
     async def Bridge(self, bridge: str, *args) -> Any: ...
+
+class nodeRpc:
+    any_attr: Any
+    async def __call__(*args: Any):
+        if any(isinstance(arg, Callable) for arg in args):
+            raise TypeError("nodeRpc错误: 无法传递函数作为参数")
+        ...
+
+def nodeImport(_from: str, *_import: str, submodule: Optional[str] = None) -> nodeRpc:
+    """nodeImport
+    import from node
+
+    Args:
+        _from (str): (rel)"../xxx.js" || (abs)"/bncr/xxx.js"
+        _import (*str): 'get','set',...
+        submodule (**Optional[str], optional): 'data.sql.api'. Defaults to None.
+
+    Returns:
+        nodeRpc: class nodeRpc
+    """
+    ...
 
 sysMethod: SysMethod
 router: APIRouter
